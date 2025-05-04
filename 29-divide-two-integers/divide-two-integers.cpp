@@ -12,7 +12,6 @@ public:
         else if(dividend<0 && divisor>=0) sign = false;
         long n = abs((long)dividend);
         long d = abs((long)divisor);
-        //divisor = abs(divisor);
         long quotient = 0;
 
         while(n>=d){
