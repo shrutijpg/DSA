@@ -1,3 +1,7 @@
+#include <iostream>
+#include <unordered_map>
+#include <string>
+
 class Solution {
 public:
     int firstUniqChar(string s) {
