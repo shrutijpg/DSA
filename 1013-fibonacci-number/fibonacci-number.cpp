@@ -3,19 +3,21 @@
 using namespace std;
 class Solution {
 public:
-    vector<int>dp;
+    // Optimizing vector<int>dp;
     int func(int n){
-        
-        if(n<=1) return n;
-        if(dp[n]!= -1) return dp[n];
+        int prev2 =0;
+        int prev=1;
+        if(n==0) return 0;
 
-        else {
-            dp[n] = func(n-1)+func(n-2);
-            return dp[n];
+        for(int i=2;i<=n;i++){
+            int curi = prev+prev2;
+            prev2=prev;
+            prev=curi;
+
         }
+        return prev;
     }
     int fib(int n) {
-        dp.resize(n+1,-1);
         return func(n);
     }
 };
