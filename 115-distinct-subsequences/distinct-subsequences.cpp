@@ -1,14 +1,14 @@
 class Solution {
 public:
-
-    int func(int i, int j,string s, string t,vector<vector<int>>&dp){
+    int mod = 1e9 + 7;
+    int func(int i, int j,string&s, string &t,vector<vector<int>>&dp){
         if(j<0) return 1;
         if(i<0) return 0;
 
         if(dp[i][j]!= -1) return dp[i][j];
 
         if(s[i] == t[j]){
-            return dp[i][j]=func(i-1,j-1,s,t,dp) + func(i-1,j,s,t,dp);
+            return dp[i][j]=(func(i-1,j-1,s,t,dp) + func(i-1,j,s,t,dp))%mod;
             
         }
         return dp[i][j]=func(i-1,j,s,t,dp);
