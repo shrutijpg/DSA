@@ -18,9 +18,27 @@ public:
     }
     int maxProfit(vector<int>& prices) {
         int n  = prices.size();
-        vector<vector<vector<int>>> dp(n,vector<vector<int>>(2,vector<int>(3,-1)));
+        
+        vector<vector<int>>after(2,vector<int>(3,0));
+        vector<vector<int>>cur(2,vector<int>(3,0));
 
-        return func(0,1,2,prices,n,dp);
+        for(int ind = n-1;ind>=0;ind--){
+            for(int buy=0;buy<=1;buy++){
+                for(int cap =1;cap<=2;cap++){
+                    if(buy){
+                        cur[buy][cap] =  max(-prices[ind]+ after[0][cap],
+                                                  after[1][cap]);
+                    }
+                    else{
+                        cur[buy][cap]= max(prices[ind]+ after[1][cap-1],
+                                             after[0][cap]);
+                    }
+                   after = cur;
+                }
+            }
+        }
+
+        return cur[1][2];
 
     }
 };
