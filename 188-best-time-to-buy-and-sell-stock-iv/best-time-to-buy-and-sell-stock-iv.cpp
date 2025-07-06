@@ -1,26 +1,28 @@
 class Solution {
 public:
-    int maxProfit(int k, vector<int>& prices) {
-        int n  = prices.size();
-        vector<vector<int>>after(2,vector<int>(k+1,0));
-        vector<vector<int>>cur(2,vector<int>(k+1,0));
+    int func(int ind, int tranNo, int k, vector<int>& prices, int n, vector<vector<int>>& dp) {
+        if (ind == n || tranNo == 2 * k) return 0;
+        if (dp[ind][tranNo] != -1) return dp[ind][tranNo];
 
-        for(int ind = n-1;ind>=0;ind--){
-            for(int buy=0;buy<=1;buy++){
-                for(int cap =1;cap<=k;cap++){
-                    if(buy){
-                        cur[buy][cap] =  max(-prices[ind]+ after[0][cap],
-                                                  after[1][cap]);
-                    }
-                    else{
-                        cur[buy][cap]= max(prices[ind]+ after[1][cap-1],
-                                             after[0][cap]);
-                    }
-                   after = cur;
-                }
-            }
+        // Buy
+        if (tranNo % 2 == 0) {
+            return dp[ind][tranNo] = max(
+                -prices[ind] + func(ind + 1, tranNo + 1, k, prices, n, dp),
+                func(ind + 1, tranNo, k, prices, n, dp)
+            );
+        } 
+        // Sell
+        else {
+            return dp[ind][tranNo] = max(
+                prices[ind] + func(ind + 1, tranNo + 1, k, prices, n, dp),
+                func(ind + 1, tranNo, k, prices, n, dp)
+            );
         }
+    }
 
-        return cur[1][k];
+    int maxProfit(int k, vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<int>> dp(n, vector<int>(2 * k, -1));
+        return func(0, 0, k, prices, n, dp);
     }
 };
