@@ -1,22 +1,25 @@
 class Solution {
 public:
-    int func(int ind,int buy,vector<int>& prices,int n,vector<vector<int>> &dp){
-        long profit;
-        if(ind  ==n) return 0;
-
-        if(dp[ind][buy] != -1) return dp[ind][buy];
-
-        if(buy){
-            profit = max((-prices[ind]+func(ind+1,0,prices,n,dp)),(0+func(ind+1,1,prices,n,dp)));
-        }
-        else{
-            profit = max((prices[ind]+func(ind+1,1,prices,n,dp)),(0+func(ind+1,0,prices,n,dp)));
-        }
-        return dp[ind][buy] = profit;
-    }
     int maxProfit(vector<int>& prices) {
         int n = prices.size();
-        vector<vector<int>> dp(n,vector<int>(2,-1));
-        return func(0,1,prices,n,dp);
+        long profit;
+        vector<long> ahead(2,0),cur(2,0);
+        vector<vector<int>> dp(n+1,vector<int>(2,-1));
+
+        ahead[0] = ahead[1] =0;
+        for(int ind=n-1;ind>=0;ind--){
+            for(int buy=0;buy<=1;buy++ ){
+                if(buy){
+                    profit = max((-prices[ind]+ ahead[0]),ahead[1]);
+                }
+                else{
+                    profit = max((prices[ind]+ ahead[1]),ahead[0]);
+                }
+                cur[buy] = profit;
+            }
+            ahead = cur;
+        }
+        
+        return ahead[1];
     }
 };
