@@ -1,44 +1,49 @@
 class Solution {
-private:
-bool dfsCheck(int node,vector<vector<int>>& adj,vector<int>&  vis, vector<int>&  pathVis,vector<int>& topo){
-    vis[node]=1;
-    pathVis[node]=1;
-
-
-    //Traversing forthe adjacent nodes
-    for(auto it : adj[node]){
-        //when node is not visited
-        if(!vis[it]){
-            if(dfsCheck(it,adj,vis,pathVis,topo)) return true;
-        }
-        //node has been previously visited
-        //but it has to be visited on the same path
-        else if(pathVis[it]){
-            return true;
-        }
-
-    }
-    pathVis[node]=0;
-    topo.push_back(node); 
-    return false;
-}
 public:
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
-        vector<vector<int>> adj(numCourses);
-
-        for (auto& pre : prerequisites) {
-            adj[pre[1]].push_back(pre[0]); // Directed edge: pre[1] → pre[0]
+        vector<vector<int>>adj(numCourses);
+        for (auto &pre : prerequisites) {
+            int u = pre[1]; 
+            int v = pre[0];
+            adj[u].push_back(v);
         }
-        vector<int> vis(numCourses, 0), pathVis(numCourses, 0), topo;
 
-        for(int i=0;i<numCourses;++i){
-            if(!vis[i]){
-                if(dfsCheck(i,adj,vis,pathVis,topo)) return {};
-
+        // Step 2: Compute indegrees
+        vector<int> indegree(numCourses, 0);
+        for (int i = 0; i < numCourses; i++) {
+            for (auto it : adj[i]) {
+                indegree[it]++;
             }
         }
-        reverse(topo.begin(), topo.end()); // reverse to get correct topological order
-        return topo;
+
+        // Step 3: Push all nodes with indegree 0 into the queue
+        queue<int> q;
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                q.push(i);
+            }
+        }
+
+        // Step 4: Process the queue
+        vector<int> topo;
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            topo.push_back(node);
+
+            for (auto it : adj[node]) {
+                indegree[it]--;
+                if (indegree[it] == 0) {
+                    q.push(it);
+                }
+            }
+        }
+
+        
+
+        if(topo.size()== numCourses)return topo;
+        return {};
+
         
     }
 };
