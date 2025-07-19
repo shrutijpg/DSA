@@ -4,13 +4,13 @@ public:
         long revNum=0;
         int dup=x;
 
-        while(dup>0){
-            int ld = dup % 10;
+        while(x>0){
+            int ld = x % 10;
 
             revNum = (revNum * 10) + ld;
-            dup=dup/10;
+            x=x/10;
         }
-        if(revNum==x) return true;
+        if(dup==revNum) return true;
         else return false;
     }
 };
