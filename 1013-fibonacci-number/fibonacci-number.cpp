@@ -4,20 +4,15 @@ using namespace std;
 class Solution {
 public:
     // Optimizing vector<int>dp;
-    int func(int n){
-        int prev2 =0;
-        int prev=1;
-        if(n==0) return 0;
-
-        for(int i=2;i<=n;i++){
-            int curi = prev+prev2;
-            prev2=prev;
-            prev=curi;
-
+    int func(int i,vector<int>&dp){
+        if(i<=1){
+            return i;
         }
-        return prev;
+        if (dp[i] != -1) return dp[i];
+        return dp[i]=func(i-1,dp)+func(i-2,dp);
     }
     int fib(int n) {
-        return func(n);
+        vector<int> dp(n+1,-1);
+        return func(n,dp);
     }
 };
