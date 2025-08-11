@@ -15,7 +15,17 @@ public:
         int n = nums.size();
 
         vector<int> dp(n,-1);
-        return func(n-1,nums,dp);
+        dp[0] = nums[0];
+        for(int i=1;i<n;i++){
+            int take = nums[i];
+            if(i>1) take += dp[i-2];
+
+            int non_take = dp[i-1];
+
+            dp[i] = max(take, non_take);
+
+        }
+        return dp[n-1];
         
     }
 };
