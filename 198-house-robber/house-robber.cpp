@@ -14,7 +14,7 @@ public:
     int rob(vector<int>& nums) {
         int n = nums.size();
 
-        vector<int> dp(n+1,-1);
+        vector<int> dp(n,-1);
         return func(n-1,nums,dp);
         
     }
