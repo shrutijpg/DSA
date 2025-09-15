@@ -1,28 +1,31 @@
+// O(n) time on average, O(n) space
+#include <bits/stdc++.h>
+using namespace std;
+
 class Solution {
 public:
     int longestConsecutive(vector<int>& nums) {
-        int n = nums.size();
-        int longest = 1;
-        if(nums.empty()) return 0;
-        unordered_set<int>set;
-        for(int i=0;i<n;i++){
-            set.insert(nums[i]);
-        }
-
-        for(auto it : set){
-            if(set.find(it-1)== set.end()){
-                int cnt = 1;
-                int x = it;
-                while(set.find(x+1) != set.end()){
-                    x = x+1;
-                    cnt++;
+        if (nums.empty()) return 0;
+        unordered_set<int> s(nums.begin(), nums.end());
+        int best = 0;
+        for (int x : s) {                // iterate over unique elements
+            if (s.find(x - 1) == s.end()) { // x is sequence start
+                int curr = x;
+                int len = 1;
+                while (s.find(curr + 1) != s.end()) {
+                    curr += 1;
+                    ++len;
                 }
-                longest = max(longest,cnt);
+                best = max(best, len);
             }
         }
-
-
-
-        return longest;
+        return best;
     }
 };
+
+// Example usage:
+// int main() {
+//     Solution sol;
+//     vector<int> nums = {100, 4, 200, 1, 3, 2};
+//     cout << sol.longestConsecutive(nums) << "\n"; // prints 4 (1,2,3,4)
+// }
